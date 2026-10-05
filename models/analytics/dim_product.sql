@@ -11,7 +11,7 @@ dim_product__rename_column AS (
   FROM dim_product__source
 ),
 
-dim_product__cast_type_column AS (
+dim_product__cast_type AS (
   SELECT 
     CAST(product_key AS INTEGER) AS	product_key,
     CAST(product_name AS STRING) AS	product_name,
@@ -23,4 +23,4 @@ SELECT
   product_key,
   product_name,
   brand_name
-FROM dim_product__rename_column
+FROM dim_product__cast_type
