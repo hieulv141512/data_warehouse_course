@@ -46,6 +46,37 @@ dim_product__handle_null AS (
   FROM dim_product__convert_boolean AS dim_product
   LEFT JOIN {{ ref('dim_supplier') }} AS dim_supplier
   ON dim_product.supplier_key = dim_supplier.supplier_key
+),
+
+dim_product__add_undefined_record AS (
+  SELECT 
+    product_key,
+    product_name,
+    supplier_key,
+    supplier_name,
+    brand_name,
+    is_chiller_stock
+  FROM dim_product__handle_null
+
+  UNION ALL
+
+  SELECT 
+    0 AS product_key,
+    "Undefined" AS product_name,
+    0 AS supplier_key,
+    "Undefined" AS supplier_name,
+    "Undefined" AS brand_name,
+    "Undefined" AS is_chiller_stock
+
+  UNION ALL
+
+  SELECT 
+    -1 AS product_key,
+    "Invalid" AS product_name,
+    -1 AS supplier_key,
+    "Invalid" AS supplier_name,
+    "Invalid" AS brand_name,
+    "Invalid" AS is_chiller_stock
 )
 
 SELECT 
@@ -55,4 +86,4 @@ SELECT
   supplier_name,
   brand_name,
   is_chiller_stock
-FROM dim_product__handle_null
+FROM dim_product__add_undefined_record

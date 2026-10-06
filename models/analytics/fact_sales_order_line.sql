@@ -26,10 +26,9 @@ fact_sales_order_line__cast_type_column AS (
 fact_sales_order_line__handle_null AS (
   SELECT 
     fact_line.sales_order_line_key,
-    fact_header.customer_key,
+    COALESCE(fact_header.customer_key, -1) AS customer_key,
     fact_line.product_key,
-    fact_header.picked_by_person_key,
-    COALESCE(fact_header.full_name, "Undefined") as full_name,
+    COALESCE(fact_header.picked_by_person_key, -1) AS picked_by_person_key,
     fact_line.quantity,
     fact_line.unit_price,
     fact_line.quantity * fact_line.unit_price AS gross_amount
@@ -43,7 +42,6 @@ SELECT
   customer_key,
   product_key,
   picked_by_person_key,
-  full_name,
   quantity,
   unit_price,
   gross_amount

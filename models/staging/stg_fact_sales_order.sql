@@ -23,7 +23,7 @@ fact_sales_order__handle_null AS (
   SELECT
     fact_order.sales_order_key,
     fact_order.customer_key,
-    fact_order.picked_by_person_key,
+    COALESCE(fact_order.picked_by_person_key, 0) AS picked_by_person_key,
     COALESCE(dim_person.full_name, "Undefined") AS full_name
   FROM fact_sales_order__cast_type AS fact_order
   LEFT JOIN {{ ref("dim_person") }} AS dim_person
