@@ -36,19 +36,23 @@ dim_product__convert_boolean AS (
 ),
 
 dim_product__handle_null AS (
-  SELECT
-    *,
-    COALESCE(brand_name_nullable, "Undefined") AS brand_name
-  FROM dim_product__convert_boolean
+  SELECT 
+    dim_product.product_key,
+    dim_product.product_name,
+    dim_product.supplier_key,
+    COALESCE(dim_supplier.supplier_name, "Undefined") AS supplier_name,
+    COALESCE(dim_product.brand_name_nullable, "Undefined") AS brand_name,
+    dim_product.is_chiller_stock
+  FROM dim_product__convert_boolean AS dim_product
+  LEFT JOIN {{ ref('dim_supplier') }} AS dim_supplier
+  ON dim_product.supplier_key = dim_supplier.supplier_key
 )
 
 SELECT 
-  dim_product.product_key,
-  dim_product.product_name,
-  dim_product.supplier_key,
-  dim_supplier.supplier_name,
-  dim_product.brand_name,
-  dim_product.is_chiller_stock
-FROM dim_product__handle_null AS dim_product
-LEFT JOIN {{ ref('dim_supplier') }} AS dim_supplier
-ON dim_product.supplier_key = dim_supplier.supplier_key
+  product_key,
+  product_name,
+  supplier_key,
+  supplier_name,
+  brand_name,
+  is_chiller_stock
+FROM dim_product__handle_null
