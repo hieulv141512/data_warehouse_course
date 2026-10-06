@@ -82,8 +82,8 @@ dim_product__add_undefined_record AS (
 SELECT 
   product_key,
   product_name,
-  supplier_key,
-  supplier_name,
   brand_name,
-  is_chiller_stock
+  is_chiller_stock,
+  supplier_name,
+  supplier_key,
 FROM dim_product__add_undefined_record

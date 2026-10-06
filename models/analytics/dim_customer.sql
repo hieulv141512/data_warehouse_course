@@ -88,10 +88,10 @@ dim_customer__add_undefined_record AS (
 
 SELECT
   customer_key,
+  customer_name,
+  is_on_credit_hold,
+  customer_category_name,
+  buying_group_name
   customer_category_key,
   buying_group_key,
-  customer_name,
-  customer_category_name,
-  is_on_credit_hold,
-  buying_group_name
 FROM dim_customer__add_undefined_record
