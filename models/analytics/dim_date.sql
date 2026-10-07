@@ -6,7 +6,7 @@ WITH dim_date__generate AS (
 )
 
 SELECT
-  date AS date
+  date AS order_date
   , FORMAT_DATE('%A', date) AS day_of_week
   , FORMAT_DATE('%a', date) AS day_of_week_short
   , CASE 
