@@ -24,7 +24,7 @@ WITH fact_sales_order__source AS (
     , CAST(is_undersupply_backordered_boolean AS BOOLEAN) AS is_undersupply_backordered_boolean
     , CAST(order_date AS DATE) AS order_date
     , CAST(expected_delivery_date AS DATE) AS expected_delivery_date
-    , CAST(picking_completed_when AS TIMESTAMP) AS picking_completed_when
+    , CAST(picking_completed_when AS DATETIME) AS picking_completed_when
     , CAST(customer_key AS INTEGER) AS customer_key
     , CAST(salesperson_person_key AS INTEGER) AS salesperson_person_key
     , CAST(picked_by_person_key AS INTEGER) AS picked_by_person_key
