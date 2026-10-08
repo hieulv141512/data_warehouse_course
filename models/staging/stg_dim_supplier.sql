@@ -49,11 +49,11 @@ SELECT
   , COALESCE(dim_delivery_method.delivery_method_name, 'Invalid') AS delivery_method_name
   , dim_supplier.delivery_city_key
   , COALESCE(dim_delivery_city.city_name, 'Invalid') AS delivery_city_name
-  , COALESCE(dim_delivery_city.state_province_key, -1) AS delivery_state_provine_key
+  , COALESCE(dim_delivery_city.state_province_key, -1) AS delivery_state_province_key
   , COALESCE(dim_delivery_city.state_province_name, 'Invalid') AS delivery_state_province_name
   , dim_supplier.postal_city_key
   , COALESCE(dim_postal_city.city_name, 'Invalid') AS postal_city_name
-  , COALESCE(dim_postal_city.state_province_key, -1) AS postal_state_provine_key
+  , COALESCE(dim_postal_city.state_province_key, -1) AS postal_state_province_key
   , COALESCE(dim_postal_city.state_province_name, 'Invalid') AS postal_state_province_name
 FROM dim_supplier__cast_type AS dim_supplier
 LEFT JOIN {{ ref('stg_dim_supplier_category') }} AS dim_supplier_category
