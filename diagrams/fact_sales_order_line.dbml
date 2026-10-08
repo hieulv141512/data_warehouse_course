@@ -1,0 +1,82 @@
+Table dim_customer {
+  customer_key int [pk]
+  customer_name text
+  is_on_credit_hold text
+  credit_limit numeric
+  standard_discount_percentage numeric
+  payment_days int
+  account_opened_date date
+  customer_category_key int
+  customer_category_name text
+  delivery_method_key int
+  delivery_method_name text
+  delivery_city_key int
+  delivery_city_name text
+  postal_city_key int
+  postal_city_name text
+  primary_contact_person_key int
+  primary_contact_person_name text
+  bill_to_customer_key int
+  bill_to_customer_name text
+}
+
+Table dim_product {
+  product_key int [pk]
+  product_name text
+  lead_time_days int
+  is_chiller_stock text
+  supplier_key int
+  supplier_name text
+  supplier_reference text
+  primary_contact_person_key int
+  primary_contact_person_name text
+  delivery_method_key int
+  delivery_method_name text
+  delivery_city_key int
+  delivery_city_name text
+  postal_city_key int
+  postal_city_name text
+  color_key int
+  color_name text
+  unit_package_type_key int
+  unit_package_type_name text
+  outer_package_type_key int
+  outer_package_type_name text
+}
+
+Table dim_person {
+  person_key int [pk]
+  full_name text
+}
+
+Table dim_package_type {
+  package_type_key int [pk]
+  package_type_name text
+}
+
+Table dim_date {
+  order_date date
+  day_of_week text
+  day_of_week_short text
+  is_weekday_or_weekend text
+}
+
+Table fact_sales_order_line {
+  sales_order_line_key int [pk]
+  description text
+  line_picking_completed_when datetime
+  quantity int
+  unit_price numeric
+  tax_rate numeric
+  gross_amount numeric
+  tax_amount numeric
+  net_amount numeric
+  is_undersupply_backordered text
+  order_date date [ref: > dim_date.order_date]
+  expected_delivery_date date
+  order_picking_completed_when datetime
+  picked_by_person_key int [ref: > dim_person.person_key]
+  customer_key int [ref: > dim_customer.customer_key]
+  product_key int [ref: > dim_product.product_key]
+  package_type_key int [ref: > dim_package_type.package_type_key]
+}
