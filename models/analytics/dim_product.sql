@@ -44,25 +44,25 @@ WITH dim_product__source AS (
     , COALESCE(dim_supplier.supplier_name, "Undefined") AS supplier_name
     , COALESCE(dim_supplier.supplier_reference, "Undefined") AS supplier_reference
     , COALESCE(dim_supplier.primary_contact_person_key, -1) AS primary_contact_person_key
-    , COALESCE(dim_supplier.primary_contact_person_name, "Invalid") AS primary_contact_person_name
+    , COALESCE(dim_supplier.primary_contact_person_name, "Undefined") AS primary_contact_person_name
     , COALESCE(dim_supplier.alternate_contact_person_key, -1) AS alternate_contact_person_key
-    , COALESCE(dim_supplier.alternate_contact_person_name, "Invalid") AS alternate_contact_person_name
+    , COALESCE(dim_supplier.alternate_contact_person_name, "Undefined") AS alternate_contact_person_name
     , COALESCE(dim_supplier.delivery_method_key, -1) AS delivery_method_key
-    , COALESCE(dim_supplier.delivery_method_name, "Invalid") AS delivery_method_name
+    , COALESCE(dim_supplier.delivery_method_name, "Undefined") AS delivery_method_name
     , COALESCE(dim_supplier.delivery_city_key, -1) AS delivery_city_key
-    , COALESCE(dim_supplier.delivery_city_name, "Invalid") AS delivery_city_name
+    , COALESCE(dim_supplier.delivery_city_name, "Undefined") AS delivery_city_name
     , COALESCE(dim_supplier.delivery_state_province_key, -1) AS delivery_state_province_key
-    , COALESCE(dim_supplier.delivery_state_province_name, "Invalid") AS delivery_state_province_name
+    , COALESCE(dim_supplier.delivery_state_province_name, "Undefined") AS delivery_state_province_name
     , COALESCE(dim_supplier.postal_city_key, -1) AS postal_city_key
-    , COALESCE(dim_supplier.postal_city_name, "Invalid") AS postal_city_name
+    , COALESCE(dim_supplier.postal_city_name, "Undefined") AS postal_city_name
     , COALESCE(dim_supplier.postal_state_province_key, -1) AS postal_state_province_key
-    , COALESCE(dim_supplier.postal_state_province_name, "Invalid") AS postal_state_province_name
+    , COALESCE(dim_supplier.postal_state_province_name, "Undefined") AS postal_state_province_name
     , dim_product.color_key
-    , COALESCE(dim_color.color_name, "Invalid") AS color_name
+    , COALESCE(dim_color.color_name, "Undefined") AS color_name
     , dim_product.unit_package_type_key
-    , COALESCE(dim_unit_package_type.package_type_name, "Invalid") AS unit_package_type_name
+    , COALESCE(dim_unit_package_type.package_type_name, "Undefined") AS unit_package_type_name
     , dim_product.outer_package_type_key
-    , COALESCE(dim_outer_package_type.package_type_name, "Invalid") AS outer_package_type_name
+    , COALESCE(dim_outer_package_type.package_type_name, "Undefined") AS outer_package_type_name
   FROM dim_product__cast_type AS dim_product
   LEFT JOIN {{ ref('stg_dim_supplier') }} AS dim_supplier
     ON dim_product.supplier_key = dim_supplier.supplier_key

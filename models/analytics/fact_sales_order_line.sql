@@ -46,6 +46,7 @@ WITH fact_sales_order_line__source AS (
     , COALESCE(fact_header.order_date, DATE '1900-01-01') AS order_date
     , COALESCE(fact_header.expected_delivery_date, DATE '1900-01-01') AS expected_delivery_date
     , COALESCE(fact_header.picking_completed_when, DATETIME '1900-01-01 00:00:00') AS order_picking_completed_when
+    , COALESCE(fact_header.salesperson_person_key, -1) AS salesperson_person_key
     , COALESCE(fact_header.picked_by_person_key, -1) AS picked_by_person_key
     , COALESCE(fact_header.customer_key, -1) AS customer_key
     , fact_line.product_key
@@ -69,6 +70,7 @@ SELECT
   , order_date
   , expected_delivery_date
   , order_picking_completed_when
+  , salesperson_person_key
   , picked_by_person_key
   , customer_key
   , product_key

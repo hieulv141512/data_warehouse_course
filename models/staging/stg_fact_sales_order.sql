@@ -46,13 +46,13 @@ WITH fact_sales_order__source AS (
     , fact_order.expected_delivery_date
     , fact_order.picking_completed_when
     , fact_order.customer_key
-    , COALESCE(dim_customer.customer_name, "Invalid") AS customer_name
+    , COALESCE(dim_customer.customer_name, "Undefined") AS customer_name
     , fact_order.salesperson_person_key
-    , COALESCE(dim_sales_person.full_name, "Invalid") AS sales_person_name
+    , COALESCE(dim_sales_person.full_name, "Undefined") AS sales_person_name
     , fact_order.picked_by_person_key
-    , COALESCE(dim_picked_by_person.full_name, "Invalid") AS picked_by_person_name
+    , COALESCE(dim_picked_by_person.full_name, "Undefined") AS picked_by_person_name
     , fact_order.contact_person_key
-    , COALESCE(dim_contact_person.full_name, "Invalid") AS contact_person_name
+    , COALESCE(dim_contact_person.full_name, "Undefined") AS contact_person_name
     , fact_order.backorder_order_key
   FROM fact_sales_order__cast_type AS fact_order
   LEFT JOIN {{ ref("dim_customer") }} AS dim_customer

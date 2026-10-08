@@ -87,25 +87,25 @@ WITH dim_customer__source AS (
     , dim_customer.payment_days
     , dim_customer.account_opened_date
     , dim_customer.customer_category_key
-    , COALESCE(dim_customer_category.customer_category_name, "Invalid") AS customer_category_name
+    , COALESCE(dim_customer_category.customer_category_name, "Undefined") AS customer_category_name
     , dim_customer.buying_group_key
-    , COALESCE(dim_buying_group.buying_group_name, "Invalid") AS buying_group_name
+    , COALESCE(dim_buying_group.buying_group_name, "Undefined") AS buying_group_name
     , dim_customer.delivery_method_key
-    , COALESCE(dim_delivery_method.delivery_method_name, "Invalid") AS delivery_method_name
+    , COALESCE(dim_delivery_method.delivery_method_name, "Undefined") AS delivery_method_name
     , dim_customer.delivery_city_key
-    , COALESCE(dim_delivery_city.city_name, "Invalid") AS delivery_city_name
+    , COALESCE(dim_delivery_city.city_name, "Undefined") AS delivery_city_name
     , COALESCE(dim_delivery_city.state_province_key, -1) AS delivery_state_province_key
-    , COALESCE(dim_delivery_city.state_province_name, "Invalid") AS delivery_state_province_name
+    , COALESCE(dim_delivery_city.state_province_name, "Undefined") AS delivery_state_province_name
     , dim_customer.postal_city_key
-    , COALESCE(dim_postal_city.city_name, "Invalid") AS postal_city_name
+    , COALESCE(dim_postal_city.city_name, "Undefined") AS postal_city_name
     , COALESCE(dim_postal_city.state_province_key, -1) AS postal_state_province_key
-    , COALESCE(dim_postal_city.state_province_name, "Invalid") AS postal_state_province_name
+    , COALESCE(dim_postal_city.state_province_name, "Undefined") AS postal_state_province_name
     , dim_customer.primary_contact_person_key
-    , COALESCE(dim_primary_contact_person.full_name, "Invalid") AS primary_contact_person_name
+    , COALESCE(dim_primary_contact_person.full_name, "Undefined") AS primary_contact_person_name
     , dim_customer.alternate_contact_person_key
-    , COALESCE(dim_alternate_contact_person.full_name, "Invalid") AS alternate_contact_person_name
+    , COALESCE(dim_alternate_contact_person.full_name, "Undefined") AS alternate_contact_person_name
     , dim_customer.bill_to_customer_key
-    , COALESCE(dim_bill_to_customer.customer_name, "Invalid") AS bill_to_customer_name
+    , COALESCE(dim_bill_to_customer.customer_name, "Undefined") AS bill_to_customer_name
   FROM dim_customer__convert_boolean AS dim_customer
   LEFT JOIN {{ ref('stg_dim_customer_category') }} AS dim_customer_category
     ON dim_customer.customer_category_key = dim_customer_category.customer_category_key
