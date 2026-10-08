@@ -42,9 +42,9 @@ SELECT
   , dim_supplier.supplier_category_key
   , COALESCE(dim_supplier_category.supplier_category_name, 'Invalid') AS supplier_category_name
   , dim_supplier.primary_contact_person_key
-  -- , COALESCE(dim_primary_contact_person.primary_contact_person_name, 'Invalid') AS primary_contact_person_name
+  , COALESCE(dim_primary_contact_person.full_name, 'Invalid') AS primary_contact_person_name
   , dim_supplier.alternate_contact_person_key
-  -- , COALESCE(dim_alternate_contact_person.alternate_contact_person_name, 'Invalid') AS alternate_contact_person_name
+  , COALESCE(dim_alternate_contact_person.full_name, 'Invalid') AS alternate_contact_person_name
   , dim_supplier.delivery_method_key
   , COALESCE(dim_delivery_method.delivery_method_name, 'Invalid') AS delivery_method_name
   , dim_supplier.delivery_city_key
@@ -58,10 +58,10 @@ SELECT
 FROM dim_supplier__cast_type AS dim_supplier
 LEFT JOIN {{ ref('stg_dim_supplier_category') }} AS dim_supplier_category
   ON dim_supplier.supplier_category_key = dim_supplier_category.supplier_category_key
--- LEFT JOIN {{ ref('dim_person') }} AS dim_primary_contact_person
---   ON dim_supplier.primary_contact_person_key = dim_primary_contact_person.primary_contact_person_key
--- LEFT JOIN {{ ref('dim_person') }} AS dim_alternate_contact_person
---   ON dim_supplier.alternate_contact_person_key = dim_alternate_contact_person.alternate_contact_person_key
+LEFT JOIN {{ ref('dim_person') }} AS dim_primary_contact_person
+  ON dim_supplier.primary_contact_person_key = dim_primary_contact_person.person_key
+LEFT JOIN {{ ref('dim_person') }} AS dim_alternate_contact_person
+  ON dim_supplier.alternate_contact_person_key = dim_alternate_contact_person.person_key
 LEFT JOIN {{ ref('stg_dim_delivery_method') }} AS dim_delivery_method
   ON dim_supplier.delivery_method_key = dim_delivery_method.delivery_method_key
 LEFT JOIN {{ ref('stg_dim_city') }} AS dim_delivery_city
