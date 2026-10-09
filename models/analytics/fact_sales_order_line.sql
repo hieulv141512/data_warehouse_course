@@ -42,7 +42,11 @@ WITH fact_sales_order_line__source AS (
     , fact_line.quantity * fact_line.unit_price AS gross_amount
     , fact_line.quantity * fact_line.unit_price * fact_line.tax_rate AS tax_amount
     , (fact_line.quantity * fact_line.unit_price) * (1 - fact_line.tax_rate) AS net_amount
-    , COALESCE(fact_header.is_undersupply_backordered, "Invalid") AS  is_undersupply_backordered
+    , CONCAT(
+        COALESCE(fact_header.is_undersupply_backordered, "Undefined")
+        , "_"
+        , CAST(fact_line.package_type_key AS STRING)
+      ) AS sales_order_line_indicator_key
     , COALESCE(fact_header.order_date, DATE '1900-01-01') AS order_date
     , COALESCE(fact_header.expected_delivery_date, DATE '1900-01-01') AS expected_delivery_date
     , COALESCE(fact_header.picking_completed_when, DATETIME '1900-01-01 00:00:00') AS order_picking_completed_when
@@ -50,7 +54,6 @@ WITH fact_sales_order_line__source AS (
     , COALESCE(fact_header.picked_by_person_key, -1) AS picked_by_person_key
     , COALESCE(fact_header.customer_key, -1) AS customer_key
     , fact_line.product_key
-    , fact_line.package_type_key
   FROM fact_sales_order_line__cast_type_column AS fact_line
   LEFT JOIN {{ ref('stg_fact_sales_order') }} AS fact_header
     ON fact_line.sales_order_key = fact_header.sales_order_key
@@ -66,7 +69,7 @@ SELECT
   , gross_amount
   , tax_amount
   , net_amount
-  , is_undersupply_backordered
+  , sales_order_line_indicator_key
   , order_date
   , expected_delivery_date
   , order_picking_completed_when
@@ -74,5 +77,4 @@ SELECT
   , picked_by_person_key
   , customer_key
   , product_key
-  , package_type_key
 FROM fact_sales_order_line__handle_null

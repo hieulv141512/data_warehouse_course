@@ -19,7 +19,7 @@ WITH dim_is_undersupply_backordered AS (
 
 SELECT 
   CONCAT(
-    CAST(is_undersupply_backordered_boolean AS STRING), 
+    is_undersupply_backordered,
     "_", 
     CAST(package_type_key AS STRING)
   ) AS sales_order_line_indicator_key
