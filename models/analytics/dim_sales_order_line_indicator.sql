@@ -18,10 +18,12 @@ WITH dim_is_undersupply_backordered AS (
 )
 
 SELECT 
-  CONCAT(
-    is_undersupply_backordered,
-    "_", 
-    CAST(package_type_key AS STRING)
+  FARM_FINGERPRINT(
+    CONCAT(
+      is_undersupply_backordered,
+      "_", 
+      CAST(package_type_key AS STRING)
+    )
   ) AS sales_order_line_indicator_key
   , *
 FROM dim_sales_order_line_indicator__cross_join

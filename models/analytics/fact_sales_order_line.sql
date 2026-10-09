@@ -42,10 +42,12 @@ WITH fact_sales_order_line__source AS (
     , fact_line.quantity * fact_line.unit_price AS gross_amount
     , fact_line.quantity * fact_line.unit_price * fact_line.tax_rate AS tax_amount
     , (fact_line.quantity * fact_line.unit_price) * (1 - fact_line.tax_rate) AS net_amount
-    , CONCAT(
-        COALESCE(fact_header.is_undersupply_backordered, "Undefined")
-        , "_"
-        , CAST(fact_line.package_type_key AS STRING)
+    , FARM_FINGERPRINT(
+        CONCAT(
+          COALESCE(fact_header.is_undersupply_backordered, "Undefined")
+          , "_"
+          , CAST(fact_line.package_type_key AS STRING)
+        )
       ) AS sales_order_line_indicator_key
     , COALESCE(fact_header.order_date, DATE '1900-01-01') AS order_date
     , COALESCE(fact_header.expected_delivery_date, DATE '1900-01-01') AS expected_delivery_date
