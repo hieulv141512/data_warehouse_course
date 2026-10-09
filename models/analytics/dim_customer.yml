@@ -1,7 +1,7 @@
 models:
-  - name: dim_product
+  - name: dim_customer
     columns:
-      - name: product_key
+      - name: custoemr_key
         data_tests:
           - unique
           - not_null

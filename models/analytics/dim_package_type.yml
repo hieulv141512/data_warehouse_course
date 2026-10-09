@@ -1,7 +1,7 @@
 models:
-  - name: dim_product
+  - name: dim_package_type
     columns:
-      - name: product_key
+      - name: package_type_key
         data_tests:
           - unique
           - not_null
