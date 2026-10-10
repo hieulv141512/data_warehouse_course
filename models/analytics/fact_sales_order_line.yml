@@ -5,6 +5,24 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: description
+        data_tests:
+          - not_null
+      - name: unit_price
+        data_tests:
+          - not_null
+      - name: tax_rate
+        data_tests:
+          - not_null
+      - name: gross_amount
+        data_tests:
+          - not_null
+      - name: tax_amount
+        data_tests:
+          - not_null
+      - name: net_amount
+        data_tests:
+          - not_null
       - name: sales_order_line_indicator_key
         data_tests:
           - not_null
@@ -12,3 +30,37 @@ models:
               arguments:
                 to: ref('dim_sales_order_line_indicator')
                 field: sales_order_line_indicator_key
+      - name: order_date
+        data_tests:
+          - not_null
+      - name: expected_delivery_date
+        data_tests:
+          - not_null
+      - name: salesperson_person_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_salesperson_person')
+                field: salesperson_person_key
+      - name: picked_by_person_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_picked_by_person')
+                field: picked_by_person_key
+      - name: customer_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_key
+      - name: product_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_key

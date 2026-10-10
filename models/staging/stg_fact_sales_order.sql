@@ -47,9 +47,9 @@ WITH fact_sales_order__source AS (
     , fact_order.picking_completed_when
     , fact_order.customer_key
     , COALESCE(dim_customer.customer_name, "Undefined") AS customer_name
-    , fact_order.salesperson_person_key
+    , COALESCE(fact_order.salesperson_person_key, 0) AS salesperson_person_key
     , COALESCE(dim_sales_person.full_name, "Undefined") AS sales_person_name
-    , fact_order.picked_by_person_key
+    , COALESCE(fact_order.picked_by_person_key, 0) AS picked_by_person_key
     , COALESCE(dim_picked_by_person.full_name, "Undefined") AS picked_by_person_name
     , fact_order.contact_person_key
     , COALESCE(dim_contact_person.full_name, "Undefined") AS contact_person_name
