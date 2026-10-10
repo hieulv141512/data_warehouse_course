@@ -5,3 +5,87 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: product_name
+        data_tests:
+          - not_null
+      - name: lead_time_days
+        data_tests:
+          - not_null
+      - name: is_chiller_stock
+        data_tests:
+          - not_null
+      - name: supplier_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_supplier')
+                field: supplier_key
+      - name: supplier_name
+        data_tests:
+          - not_null
+      - name: supplier_reference
+        data_tests:
+          - not_null
+      - name: primary_contact_person_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_person')
+                field: person_key
+      - name: primary_contact_person_name
+        data_tests:
+          - not_null
+      - name: alternate_contact_person_key
+        data_tests:
+          - not_null
+      - name: alternate_contact_person_name
+        data_tests:
+          - not_null
+      - name: delivery_method_key
+        data_tests:
+          - not_null
+      - name: delivery_method_name
+        data_tests:
+          - not_null
+      - name: delivery_city_key
+        data_tests:
+          - not_null
+      - name: delivery_city_name
+        data_tests:
+          - not_null
+      - name: delivery_state_province_key
+        data_tests:
+          - not_null
+      - name: delivery_state_province_name
+        data_tests:
+          - not_null
+      - name: postal_city_key
+        data_tests:
+          - not_null
+      - name: postal_city_name
+        data_tests:
+          - not_null
+      - name: postal_state_province_key
+        data_tests:
+          - not_null
+      - name: postal_state_province_name
+        data_tests:
+          - not_null
+      - name: color_key
+        data_tests:
+          - not_null
+      - name: color_name
+        data_tests:
+          - not_null
+      - name: unit_package_type_key
+        data_tests:
+          - not_null
+      - name: unit_package_type_name
+        data_tests:
+          - not_null
+      - name: outer_package_type_key
+        data_tests:
+          - not_null
+      - name: outer_package_type_name

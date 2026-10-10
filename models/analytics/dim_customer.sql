@@ -81,14 +81,15 @@ WITH dim_customer__source AS (
   SELECT
     dim_customer.customer_key
     , dim_customer.customer_name
-    , dim_customer.is_on_credit_hold
-    , dim_customer.credit_limit
+    , COALESCE(dim_customer.is_statement_sent, "Undefined") AS is_statement_sent
+    , COALESCE(dim_customer.is_on_credit_hold, "Undefined") AS is_on_credit_hold
+    , COALESCE(dim_customer.credit_limit, 0) AS credit_limit
     , dim_customer.standard_discount_percentage
     , dim_customer.payment_days
     , dim_customer.account_opened_date
     , dim_customer.customer_category_key
     , COALESCE(dim_customer_category.customer_category_name, "Undefined") AS customer_category_name
-    , dim_customer.buying_group_key
+    , COALESCE(dim_customer.buying_group_key, 0) AS buying_group_key
     , COALESCE(dim_buying_group.buying_group_name, "Undefined") AS buying_group_name
     , dim_customer.delivery_method_key
     , COALESCE(dim_delivery_method.delivery_method_name, "Undefined") AS delivery_method_name
@@ -102,9 +103,9 @@ WITH dim_customer__source AS (
     , COALESCE(dim_postal_city.state_province_name, "Undefined") AS postal_state_province_name
     , dim_customer.primary_contact_person_key
     , COALESCE(dim_primary_contact_person.full_name, "Undefined") AS primary_contact_person_name
-    , dim_customer.alternate_contact_person_key
+    , COALESCE(dim_customer.alternate_contact_person_key, 0) AS alternate_contact_person_key
     , COALESCE(dim_alternate_contact_person.full_name, "Undefined") AS alternate_contact_person_name
-    , dim_customer.bill_to_customer_key
+    , COALESCE(dim_customer.bill_to_customer_key, 0) AS bill_to_customer_key
     , COALESCE(dim_bill_to_customer.customer_name, "Undefined") AS bill_to_customer_name
   FROM dim_customer__convert_boolean AS dim_customer
   LEFT JOIN {{ ref('stg_dim_customer_category') }} AS dim_customer_category
@@ -129,6 +130,7 @@ WITH dim_customer__source AS (
   SELECT
     customer_key
     , customer_name
+    , is_statement_sent
     , is_on_credit_hold
     , credit_limit
     , standard_discount_percentage
@@ -161,6 +163,7 @@ WITH dim_customer__source AS (
   SELECT
     0 AS customer_key
     , "Undefined" AS customer_name
+    , "Undefined" AS is_statement_sent
     , "Undefined" AS is_on_credit_hold
     , CAST(0 AS DECIMAL) AS credit_limit
     , 0 AS standard_discount_percentage
@@ -192,6 +195,7 @@ WITH dim_customer__source AS (
   SELECT
     -1 AS customer_key
     , "Invalid" AS customer_name
+    , "Invalid" AS is_statement_sent
     , "Invalid" AS is_on_credit_hold
     , CAST(-1 AS DECIMAL) AS credit_limit
     , -1 AS standard_discount_percentage

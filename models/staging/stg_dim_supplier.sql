@@ -34,37 +34,110 @@ WITH dim_supplier__source AS (
   FROM dim_supplier__rename_column
 )
 
+, dim_supplier__handle_null AS (
+  SELECT
+    dim_supplier.supplier_key
+    , dim_supplier.supplier_name
+    , dim_supplier.supplier_reference
+    , dim_supplier.payment_days
+    , dim_supplier.supplier_category_key
+    , COALESCE(dim_supplier_category.supplier_category_name, 'Invalid') AS supplier_category_name
+    , dim_supplier.primary_contact_person_key
+    , COALESCE(dim_primary_contact_person.full_name, 'Invalid') AS primary_contact_person_name
+    , dim_supplier.alternate_contact_person_key
+    , COALESCE(dim_alternate_contact_person.full_name, 'Invalid') AS alternate_contact_person_name
+    , dim_supplier.delivery_method_key
+    , COALESCE(dim_delivery_method.delivery_method_name, 'Invalid') AS delivery_method_name
+    , dim_supplier.delivery_city_key
+    , COALESCE(dim_delivery_city.city_name, 'Invalid') AS delivery_city_name
+    , COALESCE(dim_delivery_city.state_province_key, -1) AS delivery_state_province_key
+    , COALESCE(dim_delivery_city.state_province_name, 'Invalid') AS delivery_state_province_name
+    , dim_supplier.postal_city_key
+    , COALESCE(dim_postal_city.city_name, 'Invalid') AS postal_city_name
+    , COALESCE(dim_postal_city.state_province_key, -1) AS postal_state_province_key
+    , COALESCE(dim_postal_city.state_province_name, 'Invalid') AS postal_state_province_name
+  FROM dim_supplier__cast_type AS dim_supplier
+  LEFT JOIN {{ ref('stg_dim_supplier_category') }} AS dim_supplier_category
+    ON dim_supplier.supplier_category_key = dim_supplier_category.supplier_category_key
+  LEFT JOIN {{ ref('dim_person') }} AS dim_primary_contact_person
+    ON dim_supplier.primary_contact_person_key = dim_primary_contact_person.person_key
+  LEFT JOIN {{ ref('dim_person') }} AS dim_alternate_contact_person
+    ON dim_supplier.alternate_contact_person_key = dim_alternate_contact_person.person_key
+  LEFT JOIN {{ ref('stg_dim_delivery_method') }} AS dim_delivery_method
+    ON dim_supplier.delivery_method_key = dim_delivery_method.delivery_method_key
+  LEFT JOIN {{ ref('stg_dim_city') }} AS dim_delivery_city
+    ON dim_supplier.delivery_city_key = dim_delivery_city.city_key
+  LEFT JOIN {{ ref('stg_dim_city') }} AS dim_postal_city
+    ON dim_supplier.postal_city_key = dim_postal_city.city_key
+)
+
 SELECT
-  dim_supplier.supplier_key
-  , dim_supplier.supplier_name
-  , dim_supplier.supplier_reference
-  , dim_supplier.payment_days
-  , dim_supplier.supplier_category_key
-  , COALESCE(dim_supplier_category.supplier_category_name, 'Invalid') AS supplier_category_name
-  , dim_supplier.primary_contact_person_key
-  , COALESCE(dim_primary_contact_person.full_name, 'Invalid') AS primary_contact_person_name
-  , dim_supplier.alternate_contact_person_key
-  , COALESCE(dim_alternate_contact_person.full_name, 'Invalid') AS alternate_contact_person_name
-  , dim_supplier.delivery_method_key
-  , COALESCE(dim_delivery_method.delivery_method_name, 'Invalid') AS delivery_method_name
-  , dim_supplier.delivery_city_key
-  , COALESCE(dim_delivery_city.city_name, 'Invalid') AS delivery_city_name
-  , COALESCE(dim_delivery_city.state_province_key, -1) AS delivery_state_province_key
-  , COALESCE(dim_delivery_city.state_province_name, 'Invalid') AS delivery_state_province_name
-  , dim_supplier.postal_city_key
-  , COALESCE(dim_postal_city.city_name, 'Invalid') AS postal_city_name
-  , COALESCE(dim_postal_city.state_province_key, -1) AS postal_state_province_key
-  , COALESCE(dim_postal_city.state_province_name, 'Invalid') AS postal_state_province_name
-FROM dim_supplier__cast_type AS dim_supplier
-LEFT JOIN {{ ref('stg_dim_supplier_category') }} AS dim_supplier_category
-  ON dim_supplier.supplier_category_key = dim_supplier_category.supplier_category_key
-LEFT JOIN {{ ref('dim_person') }} AS dim_primary_contact_person
-  ON dim_supplier.primary_contact_person_key = dim_primary_contact_person.person_key
-LEFT JOIN {{ ref('dim_person') }} AS dim_alternate_contact_person
-  ON dim_supplier.alternate_contact_person_key = dim_alternate_contact_person.person_key
-LEFT JOIN {{ ref('stg_dim_delivery_method') }} AS dim_delivery_method
-  ON dim_supplier.delivery_method_key = dim_delivery_method.delivery_method_key
-LEFT JOIN {{ ref('stg_dim_city') }} AS dim_delivery_city
-  ON dim_supplier.delivery_city_key = dim_delivery_city.city_key
-LEFT JOIN {{ ref('stg_dim_city') }} AS dim_postal_city
-  ON dim_supplier.postal_city_key = dim_postal_city.city_key
+  supplier_key
+  , supplier_name
+  , supplier_reference
+  , payment_days
+  , supplier_category_key
+  , supplier_category_name
+  , primary_contact_person_key
+  , primary_contact_person_name
+  , alternate_contact_person_key
+  , alternate_contact_person_name
+  , delivery_method_key
+  , delivery_method_name
+  , delivery_city_key
+  , delivery_city_name
+  , delivery_state_province_key
+  , delivery_state_province_name
+  , postal_city_key
+  , postal_city_name
+  , postal_state_province_key
+  , postal_state_province_name
+FROM dim_supplier__handle_null
+
+UNION ALL
+
+SELECT
+  0 AS supplier_key
+  , "Undefined" AS supplier_name
+  , "Undefined" AS supplier_reference
+  , 0 AS payment_days
+  , 0 AS supplier_category_key
+  , "Undefined" AS supplier_category_name
+  , 0 AS primary_contact_person_key
+  , "Undefined" AS primary_contact_person_name
+  , 0 AS alternate_contact_person_key
+  , "Undefined" AS alternate_contact_person_name
+  , 0 AS delivery_method_key
+  , "Undefined" AS delivery_method_name
+  , 0 AS delivery_city_key
+  , "Undefined" AS delivery_city_name
+  , 0 AS delivery_state_province_key
+  , "Undefined" AS delivery_state_province_name
+  , 0 AS postal_city_key
+  , "Undefined" AS postal_city_name
+  , 0 AS postal_state_province_key
+  , "Undefined" AS postal_state_province_name
+
+UNION ALL
+
+SELECT
+  -1 AS supplier_key
+  , "Invalid" AS supplier_name
+  , "Invalid" AS supplier_reference
+  , -1 AS payment_days
+  , -1 AS supplier_category_key
+  , "Invalid" AS supplier_category_name
+  , -1 AS primary_contact_person_key
+  , "Invalid" AS primary_contact_person_name
+  , -1 AS alternate_contact_person_key
+  , "Invalid" AS alternate_contact_person_name
+  , -1 AS delivery_method_key
+  , "Invalid" AS delivery_method_name
+  , -1 AS delivery_city_key
+  , "Invalid" AS delivery_city_name
+  , -1 AS delivery_state_province_key
+  , "Invalid" AS delivery_state_province_name
+  , -1 AS postal_city_key
+  , "Invalid" AS postal_city_name
+  , -1 AS postal_state_province_key
+  , "Invalid" AS postal_state_province_name

@@ -5,3 +5,6 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: package_type_name
+        data_tests:
+          - not_null

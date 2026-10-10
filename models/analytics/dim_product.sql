@@ -57,7 +57,7 @@ WITH dim_product__source AS (
     , COALESCE(dim_supplier.postal_city_name, "Undefined") AS postal_city_name
     , COALESCE(dim_supplier.postal_state_province_key, -1) AS postal_state_province_key
     , COALESCE(dim_supplier.postal_state_province_name, "Undefined") AS postal_state_province_name
-    , dim_product.color_key
+    , COALESCE(dim_product.color_key, 0) AS color_key
     , COALESCE(dim_color.color_name, "Undefined") AS color_name
     , dim_product.unit_package_type_key
     , COALESCE(dim_unit_package_type.package_type_name, "Undefined") AS unit_package_type_name

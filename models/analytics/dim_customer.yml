@@ -1,7 +1,76 @@
 models:
   - name: dim_customer
     columns:
-      - name: custoemr_key
+      - name: customer_key
         data_tests:
           - unique
           - not_null
+      - name: customer_name
+        data_tests:
+          - not_null
+      - name: is_on_credit_hold
+        data_tests:
+          - not_null
+      - name: credit_limit
+        data_tests:
+          - not_null
+      - name: standard_discount_percentage
+        data_tests:
+          - not_null
+      - name: payment_days
+        data_tests:
+          - not_null
+      - name: account_opened_date
+        data_tests:
+          - not_null
+      - name: customer_category_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_customer_category')
+                field: customer_category_key
+                where: 'customer_category_key not in (0, -1)'
+      - name: delivery_method_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_delivery_method')
+                field: delivery_method_key
+                where: 'delivery_method_key not in (0, -1)'
+      - name: delivery_city_key
+        data_tests:
+          - not_null
+      - name: postal_city_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_city')
+                field: city_key
+                where: 'postal_city_key not in (0, -1)'
+      - name: primary_contact_person_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_person')
+                field: person_key
+                where: 'primary_contact_person_key not in (0, -1)'
+      - name: alternate_contact_person_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_person')
+                field: person_key
+                where: 'alternate_contact_person_key not in (0, -1)'
+      - name: bill_to_customer_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: bill_to_customer_key
+                where: 'bill_to_customer_key not in (0, -1)'
