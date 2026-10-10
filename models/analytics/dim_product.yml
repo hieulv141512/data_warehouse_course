@@ -34,58 +34,104 @@ models:
               arguments:
                 to: ref('dim_person')
                 field: person_key
+                where: "primary_contact_person_key not in (0, -1)"
       - name: primary_contact_person_name
         data_tests:
           - not_null
       - name: alternate_contact_person_key
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_person')
+                field: person_key
+                where: "alternate_contact_person_key not in (0, -1)"
       - name: alternate_contact_person_name
         data_tests:
           - not_null
       - name: delivery_method_key
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_delivery_method')
+                field: delivery_method_key
+                where: "delivery_method_key not in (0, -1)"
       - name: delivery_method_name
         data_tests:
           - not_null
       - name: delivery_city_key
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_city')
+                field: city_key
+                where: "delivery_city_key not in (0, -1)"
       - name: delivery_city_name
         data_tests:
           - not_null
       - name: delivery_state_province_key
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_state_province')
+                field: state_province_key
+                where: "delivery_state_province_key not in (0, -1)"
       - name: delivery_state_province_name
         data_tests:
           - not_null
       - name: postal_city_key
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_city')
+                field: city_key
+                where: "postal_city_key not in (0, -1)"
       - name: postal_city_name
         data_tests:
           - not_null
       - name: postal_state_province_key
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_state_province')
+                field: state_province_key
+                where: "postal_state_province_key not in (0, -1)"
       - name: postal_state_province_name
         data_tests:
           - not_null
       - name: color_key
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_color')
+                field: color_key
+                where: "color_key not in (0, -1)"
       - name: color_name
         data_tests:
           - not_null
       - name: unit_package_type_key
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_package_type')
+                field: package_type_key
+                where: "unit_package_type_key not in (0, -1)"
       - name: unit_package_type_name
         data_tests:
           - not_null
       - name: outer_package_type_key
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_package_type')
+                field: package_type_key
+                where: "outer_package_type_key not in (0, -1)"
       - name: outer_package_type_name
